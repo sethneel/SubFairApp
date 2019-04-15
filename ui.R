@@ -19,6 +19,7 @@ ui <- fluidPage(
       #numericInput("min_l1", "min l1 dist.", 0, 0, 67, width='75px'),
       # unrestricted sampling
       #numericInput("max_l1", "max l1 dist.", 100, 1, 67, width='75px'),
+      textOutput("pairs_left"),
       a("Instructions",target="_blank",href="test.pdf"),
       hr(),
       actionButton("start", "Register", icon("paper-plane")) 
@@ -33,8 +34,8 @@ ui <- fluidPage(
       textOutput('vs'),
       tableOutput("person_2"),
       #plotOutput("compare_pairs_plot"),
-      actionButton("fair_button", textOutput("fair_b")),
-      actionButton("unfair_button", textOutput("unfair_b"))
+      actionButton("unfair_button", textOutput("unfair_b")),
+      actionButton("fair_button", textOutput("fair_b"))
     ), position = 'right'
   ), 
   hr(),
