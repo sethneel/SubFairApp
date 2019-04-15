@@ -128,7 +128,7 @@ server <- function(input, output){
   
   # save email
   observeEvent(input$register_email, {
-    emails <<- c(emails, input$shinyalert)
+    emails <<- c(emails, input$register_email)
     filePath=paste0('sessions/emails.csv')
     write.csv(data.frame(email=emails), file=filePath)
     drop_upload(filePath, path = outputDir)
