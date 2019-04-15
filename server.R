@@ -12,6 +12,9 @@ colnames(predictor_df) = c("sex", "age","race","juv. felony count","juv. misdeme
 
 pdf = data.frame()
 emails = c()
+question_1 = c()
+question_2 = c()
+question_3 = c()
 names = c()
 n_pairs = 50
 dir.create('sessions')
@@ -19,7 +22,7 @@ outputDir = 'Research/Current_Projects/SubjectiveFairness/shiny-app-output'
 drop_create(outputDir)
 user_number = 0
 server <- function(input, output){
-  output$prompt <- renderText("Please read the Instructions and complete registration.")
+  output$prompt <- renderText("Please read the Instructions and complete Registration.")
   user_number <<- user_number + 1
   pair_num <- reactiveVal(1)
   shinyjs::disable("fair_button")
@@ -68,8 +71,12 @@ server <- function(input, output){
       filePath=paste0('sessions/user-',user_number,'-pairs.csv')
       write.csv(pdf, file=filePath)
       drop_upload(filePath, path = outputDir)
-      shinyalert("Complete!", "Thank you for your fairness rankings!", type = "success")
-    }else{
+      shinyalert("Almost Done!", "Now please answer a few short questions.", type = "success")
+      shinyalert("Question 1 of 3", "To the extent that you ad or developed systematic or informal rules for deciding which pairs should be treated equally, briefly articulate them:",type = "input", inputId = 'question_1')
+      shinyalert("Question 2 of 3", "Did you feel that the experimental protocl allowed you to express your subjective notion of fairness?", type = "input", inputId = 'question_2')
+      shinyalert("Question 3 of 3", "Any other comments on the experimental protocol or app?", type = "input", inputId = 'question_3')
+      shinyalert("Complete!", 'Thank you for your fairness rankings, please exit the app', type = "success")
+      }else{
       shinyjs::disable("fair_button")
       pdf[pair_num(),'fair'] <<- 1
       newval <- pair_num() + 1
@@ -101,7 +108,12 @@ server <- function(input, output){
       filePath=paste0('sessions/user-',user_number,'-pairs.csv')
       write.csv(pdf, file=filePath)
       drop_upload(filePath, path = outputDir)
-      shinyalert("Complete!", "Thank you for your fairness rankings!", type = "success")
+      shinyalert("Almost Done!", "Now please answer a few short questions.", type = "success")
+      shinyalert("Question 1 of 3", "To the extent that you ad or developed systematic or informal rules for deciding which pairs should be treated equally, briefly articulate them:",type = "input", inputId = 'question_1')
+      shinyalert("Question 2 of 3", "Did you feel that the experimental protocl allowed you to express your subjective notion of fairness?", type = "input", inputId = 'question_2')
+      shinyalert("Question 3 of 3", "Any other comments on the experimental protocol or app?", type = "input", inputId = 'question_3')
+      shinyalert("Complete!", 'Thank you for your fairness rankings, please exit the app', type = "success")
+      
     }else{
       shinyjs::disable("unfair_button")
       pdf[pair_num(),'fair'] <<- 0
@@ -140,6 +152,22 @@ server <- function(input, output){
     names <<- c(names, input$register_name)
     filePath=paste0('sessions/names.csv')
     write.csv(data.frame(names=names), file=filePath)
+    drop_upload(filePath, path = outputDir)
+  })
+  
+  
+  observeEvent(input$question_1, {
+    question_1 <<- c(question_1, paste0('user ', user_number, ':', input$question_1))
+  })
+  
+  observeEvent(input$question_2, {
+    question_2 <<- c(question_2, paste0('user ', user_number, ':', input$question_2))
+  })
+  
+  observeEvent(input$question_3, {
+    question_3 <<- c(question_3, paste0('user ', user_number, ':', input$question_3))
+    filePath=paste0('sessions/questions.csv')
+    write.csv(data.frame(q1=question_1, q2 = question_2, q3 = question_3), file=filePath)
     drop_upload(filePath, path = outputDir)
   })
   
