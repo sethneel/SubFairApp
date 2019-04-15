@@ -20,7 +20,7 @@ ui <- fluidPage(
       # unrestricted sampling
       #numericInput("max_l1", "max l1 dist.", 100, 1, 67, width='75px'),
       textOutput("pairs_left"),
-      a("Instructions",target="_blank",href="test.pdf"),
+      a("Instructions",target="_blank",href="instructions.pdf"),
       hr(),
       actionButton("start", "Register", icon("paper-plane")) 
       #            style="color: #fff; background-color: #337ab7; border-color: #2e6da4")

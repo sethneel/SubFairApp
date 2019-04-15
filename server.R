@@ -70,7 +70,7 @@ server <- function(input, output){
       drop_upload(filePath, path = outputDir)
       shinyalert("Complete!", "Thank you for your fairness rankings!", type = "success")
     }else{
-      shinyjs::disable("fair_b")
+      shinyjs::disable("fair_button")
       pdf[pair_num(),'fair'] <<- 1
       newval <- pair_num() + 1
       pair_num(newval)
@@ -88,7 +88,7 @@ server <- function(input, output){
         write.csv(pdf, file=filePath)
         drop_upload(filePath, path = outputDir)
       }
-      shinyjs::enable("fair_b")
+      shinyjs::enable("fair_button")
     }
     
   })
@@ -103,7 +103,7 @@ server <- function(input, output){
       drop_upload(filePath, path = outputDir)
       shinyalert("Complete!", "Thank you for your fairness rankings!", type = "success")
     }else{
-      shinyjs::disable("unfair_b")
+      shinyjs::disable("unfair_button")
       pdf[pair_num(),'fair'] <<- 0
       newval <- pair_num() + 1
       pair_num(newval)
@@ -121,7 +121,7 @@ server <- function(input, output){
         write.csv(pdf, file=filePath)
         drop_upload(filePath, path = outputDir)
       }
-      shinyjs::enable("fair_b")
+      shinyjs::enable("unfair_button")
     }
   })
   
@@ -138,12 +138,12 @@ server <- function(input, output){
   # save name
   observeEvent(input$register_name, {
     names <<- c(names, input$register_name)
-    filePath=paste0('sessions/emails.csv')
+    filePath=paste0('sessions/names.csv')
     write.csv(data.frame(names=names), file=filePath)
     drop_upload(filePath, path = outputDir)
   })
   
   #server
-  observe({toggle(id="fair_button", condition=!is.null(input$start))})
+  #observe({toggle(id="fair_button", condition=!is.null(input$start))})
   
 }
