@@ -1,4 +1,5 @@
 library(shinyjs)
+library(shinyalert)
 ui <- fluidPage(
   useShinyalert(),
   # Application title

@@ -17,6 +17,7 @@ outputDir = 'Research/Current_Projects/SubjectiveFairness/shiny-app-output'
 drop_create(outputDir)
 user_number = 0
 server <- function(input, output){
+  options(shiny.sanitize.errors = FALSE)
   output$prompt <- renderText("Please read the Instructions and complete registration.")
   user_number <<- user_number + 1
   pair_num <- reactiveVal(1)
