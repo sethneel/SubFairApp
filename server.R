@@ -29,6 +29,8 @@ server <- function(input, output, session){
   shinyjs::disable("unfair_button")
   # plot the first example
   observeEvent(input$start, {
+    outputDir = paste0('Research/Current_Projects/SubjectiveFairness/shiny-app-output/user', user_number)
+    drop_create(outputDir)
     shinyalert("Registration", "Enter your full name", type = "input", inputId = 'register_name')
     shinyalert("Registration", "Enter your college email", type="input", inputId = 'register_email')
     shinyalert("Registration Complete.", "Please allow some time for the first pair to load.", type= 'success', inputId= 'loading')
