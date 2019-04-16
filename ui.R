@@ -1,6 +1,6 @@
 library(shinyjs)
 library(shinyalert)
-ui <- fluidPage(
+ui <- fluidPage(title='Subjective Fairness',
   useShinyalert(),
   # Application title
   headerPanel(

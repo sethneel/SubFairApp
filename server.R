@@ -11,20 +11,20 @@ predictor_df <- predictor_df %>% mutate('temp' = ifelse(c_charge_degree == 'F', 
 colnames(predictor_df) = c("sex", "age","race","juv. felony count","juv. misdemeanor count","juv. other count","priors count","severity of charge")
 
 pdf = data.frame()
-emails = c()
-question_1 = c()
-question_2 = c()
-question_3 = c()
-names = c()
 n_pairs = 50
 dir.create('sessions')
-outputDir = 'Research/Current_Projects/SubjectiveFairness/shiny-app-output'
-drop_create(outputDir)
-user_number = 0
+
 server <- function(input, output){
   output$prompt <- renderText("Please read the Instructions and complete Registration.")
-  user_number <<- user_number + 1
+  load('user_number.RData')
+  user_number = user_number + 1
+  save(file='user_number.RData', user_number)
+  outputDir = paste0('Research/Current_Projects/SubjectiveFairness/shiny-app-output/user', user_number)
+  drop_create(outputDir)
   pair_num <- reactiveVal(1)
+  question_1 = ''
+  question_2 = ''
+  question_3 = ''
   shinyjs::disable("fair_button")
   shinyjs::disable("unfair_button")
   # plot the first example
@@ -113,6 +113,8 @@ server <- function(input, output){
       shinyalert("Question 2 of 3", "Did you feel that the experimental protocl allowed you to express your subjective notion of fairness?", type = "input", inputId = 'question_2')
       shinyalert("Question 3 of 3", "Any other comments on the experimental protocol or app?", type = "input", inputId = 'question_3')
       shinyalert("Complete!", 'Thank you for your fairness rankings, please exit the app', type = "success")
+      shinyjs::disable("fair_button")
+      shinyjs::disable("unfair_button")
       
     }else{
       shinyjs::disable("unfair_button")
@@ -140,8 +142,8 @@ server <- function(input, output){
   
   # save email
   observeEvent(input$register_email, {
-    emails <<- c(emails, input$register_email)
-    filePath=paste0('sessions/emails.csv')
+    emails = input$register_email
+    filePath=paste0('sessions/', 'user-', user_number,'-email.csv')
     write.csv(data.frame(email=emails), file=filePath)
     drop_upload(filePath, path = outputDir)
   })
@@ -149,24 +151,24 @@ server <- function(input, output){
   
   # save name
   observeEvent(input$register_name, {
-    names <<- c(names, input$register_name)
-    filePath=paste0('sessions/names.csv')
-    write.csv(data.frame(names=names), file=filePath)
+    names = input$register_name
+    filePath=paste0('sessions/', 'user-', user_number,'-name.csv')
+    write.csv(data.frame(name=names), file=filePath)
     drop_upload(filePath, path = outputDir)
   })
   
   
   observeEvent(input$question_1, {
-    question_1 <<- c(question_1, paste0('user ', user_number, ':', input$question_1))
+    question_1 <<- paste0('user ', user_number, ':', input$question_1)
   })
   
   observeEvent(input$question_2, {
-    question_2 <<- c(question_2, paste0('user ', user_number, ':', input$question_2))
+    question_2 <<- paste0('user ', user_number, ':', input$question_2)
   })
   
   observeEvent(input$question_3, {
-    question_3 <<- c(question_3, paste0('user ', user_number, ':', input$question_3))
-    filePath=paste0('sessions/questions.csv')
+    question_3 <<- paste0('user ', user_number, ':', input$question_3)
+    filePath=paste0('sessions/user-', user_number,'-questions.csv')
     write.csv(data.frame(q1=question_1, q2 = question_2, q3 = question_3), file=filePath)
     drop_upload(filePath, path = outputDir)
   })
