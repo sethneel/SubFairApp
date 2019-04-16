@@ -24,17 +24,20 @@ server <- function(input, output, session){
   question_3 = ''
   shinyjs::disable("fair_button")
   shinyjs::disable("unfair_button")
+  outputDir = paste0('Research/Current_Projects/SubjectiveFairness/shiny-app-output/user', user_number)
+  
   # plot the first example
   observeEvent(input$start, {
-    outputDir = paste0('Research/Current_Projects/SubjectiveFairness/shiny-app-output/user', user_number)
+    # create output directory
     drop_create(outputDir)
     shinyalert("Registration", "Enter your full name", type = "input", inputId = 'register_name')
     shinyalert("Registration", "Enter your college email", type="input", inputId = 'register_email')
     shinyalert("Registration Complete.", "Please allow some time for the first pair to load.", type= 'success', inputId= 'loading')
-    # plot the first pair
+    # get the pairs
     pairs = sampler(distances, d_min=0, d_max=100, n_pairs)
     pdf <<- cbind(pairs, data.frame(fair=rep(NA, n_pairs)))
     next_pair = pdf[1, 1:2]
+    # plot the first pair and display the page
     output$pairs_left <- renderText('50 out of 50 pairs left')
     output$prompt <- renderText('In your view, as a matter of fairness, should the following two individuals recieve the same recidivism
                prediction, or is it ok to give them different predictions?')
@@ -43,6 +46,7 @@ server <- function(input, output, session){
     output$unfair_b <- renderText("Should be treated equally")
     output$person_1 <- renderTable(predictor_df[next_pair[1,1],])
     output$person_2 <- renderTable(predictor_df[next_pair[1,2],])
+    # enable click through
     shinyjs::enable("fair_button")
     shinyjs::enable("unfair_button")
     shinyjs::disable("start")
