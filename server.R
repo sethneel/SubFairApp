@@ -30,7 +30,7 @@ server <- function(input, output){
   # plot the first example
   observeEvent(input$start, {
     shinyalert("Registration", "Enter your full name", type = "input", inputId = 'register_name')
-    shinyalert("Registration", "Enter your Penn email", type="input", inputId = 'register_email')
+    shinyalert("Registration", "Enter your college email", type="input", inputId = 'register_email')
     shinyalert("Registration Complete.", "Please allow some time for the first pair to load.", type= 'success', inputId= 'loading')
     # plot the first pair
     pairs = sampler(distances, d_min=0, d_max=100, n_pairs)
@@ -68,18 +68,20 @@ server <- function(input, output){
     # update pair data frame
    
     if(pair_num() >= n_pairs){
-      pdf[pair_num(),'fair'] <<- 1
+      pdf[pair_num(),'fair'] <<- 0
       filePath=paste0('sessions/user-',user_number,'-pairs.csv')
       write.csv(pdf, file=filePath)
       drop_upload(filePath, path = outputDir)
       shinyalert("Almost Done!", "Now please answer a few short questions.", type = "success")
-      shinyalert("Question 1 of 3", "To the extent that you ad or developed systematic or informal rules for deciding which pairs should be treated equally, briefly articulate them:",type = "input", inputId = 'question_1')
-      shinyalert("Question 2 of 3", "Did you feel that the experimental protocl allowed you to express your subjective notion of fairness?", type = "input", inputId = 'question_2')
+      shinyalert("Question 1 of 3", "To the extent that you had or developed systematic or informal rules for deciding which pairs should be treated equally, briefly articulate them:",type = "input", inputId = 'question_1')
+      shinyalert("Question 2 of 3", "Did you feel that the experimental protocol allowed you to express your subjective notion of fairness?", type = "input", inputId = 'question_2')
       shinyalert("Question 3 of 3", "Any other comments on the experimental protocol or app?", type = "input", inputId = 'question_3')
       shinyalert("Complete!", 'Thank you for your fairness rankings, please exit the app', type = "success")
+      shinyjs::disable("fair_button")
+      shinyjs::disable("unfair_button")
       }else{
       shinyjs::disable("fair_button")
-      pdf[pair_num(),'fair'] <<- 1
+      pdf[pair_num(),'fair'] <<- 0
       newval <- pair_num() + 1
       pair_num(newval)
       print(pair_num())
@@ -105,7 +107,7 @@ server <- function(input, output){
   observeEvent(input$unfair_button, {
     # update pair data frame
     if(pair_num() >= n_pairs){
-      pdf[pair_num(),'fair'] <<- 0
+      pdf[pair_num(),'fair'] <<- 1
       filePath=paste0('sessions/user-',user_number,'-pairs.csv')
       write.csv(pdf, file=filePath)
       drop_upload(filePath, path = outputDir)
@@ -119,7 +121,7 @@ server <- function(input, output){
       
     }else{
       shinyjs::disable("unfair_button")
-      pdf[pair_num(),'fair'] <<- 0
+      pdf[pair_num(),'fair'] <<- 1
       newval <- pair_num() + 1
       pair_num(newval)
       # get the next pair

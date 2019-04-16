@@ -39,7 +39,7 @@ ui <- fluidPage(title='Subjective Fairness',
     ), position = 'right'
   ), 
   hr(),
-  h5("(C) 2019 Seth Neel (sethneel@wharton.upenn.edu)"),
+  h5("(c) 2019 Seth Neel (fullname@wharton.upenn.edu)"),
   h5("Data Source: https://github.com/propublica/compas-analysis"),
   h5("The AlgoWatch Project, Unversity of Pennsylvania")
   )
