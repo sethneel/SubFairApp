@@ -31,6 +31,7 @@ server <- function(input, output){
   observeEvent(input$start, {
     shinyalert("Registration", "Enter your full name", type = "input", inputId = 'register_name')
     shinyalert("Registration", "Enter your Penn email", type="input", inputId = 'register_email')
+    shinyalert("Registration Complete.", "Please allow some time for the first pair to load.", type= 'success', inputId= 'loading')
     # plot the first pair
     pairs = sampler(distances, d_min=0, d_max=100, n_pairs)
     pdf <<- cbind(pairs, data.frame(fair=rep(NA, n_pairs)))
