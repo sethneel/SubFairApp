@@ -18,9 +18,6 @@ server <- function(input, output, session){
   output$prompt <- renderText("Please read the Instructions and complete Registration.")
   #load('user_number.RData')
   user_number = session$token
-  #save(file='user_number.RData', user_number)
-  outputDir = paste0('Research/Current_Projects/SubjectiveFairness/shiny-app-output/user', user_number)
-  drop_create(outputDir)
   pair_num <- reactiveVal(1)
   question_1 = ''
   question_2 = ''
@@ -83,6 +80,7 @@ server <- function(input, output, session){
       shinyjs::disable("unfair_button")
       }else{
       shinyjs::disable("fair_button")
+      shinyjs::disable("unfair_button")
       pdf[pair_num(),'fair'] <<- 0
       newval <- pair_num() + 1
       pair_num(newval)
@@ -101,6 +99,7 @@ server <- function(input, output, session){
         drop_upload(filePath, path = outputDir)
       }
       shinyjs::enable("fair_button")
+      shinyjs::enable("unfair_button")
     }
     
   })
@@ -123,6 +122,7 @@ server <- function(input, output, session){
       
     }else{
       shinyjs::disable("unfair_button")
+      shinyjs::disable("fair_button")
       pdf[pair_num(),'fair'] <<- 1
       newval <- pair_num() + 1
       pair_num(newval)
@@ -141,6 +141,7 @@ server <- function(input, output, session){
         drop_upload(filePath, path = outputDir)
       }
       shinyjs::enable("unfair_button")
+      shinyjs::enable("fair_button")
     }
   })
   
