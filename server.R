@@ -14,11 +14,11 @@ pdf = data.frame()
 n_pairs = 50
 dir.create('sessions')
 
-server <- function(input, output){
+server <- function(input, output, session){
   output$prompt <- renderText("Please read the Instructions and complete Registration.")
-  load('user_number.RData')
-  user_number = user_number + 1
-  save(file='user_number.RData', user_number)
+  #load('user_number.RData')
+  user_number = session$token
+  #save(file='user_number.RData', user_number)
   outputDir = paste0('Research/Current_Projects/SubjectiveFairness/shiny-app-output/user', user_number)
   drop_create(outputDir)
   pair_num <- reactiveVal(1)
