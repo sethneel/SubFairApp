@@ -79,7 +79,7 @@ server <- function(input, output, session){
       shinyalert("Question 1 of 3", "To the extent that you had or developed systematic or informal rules for deciding which pairs should be treated equally, briefly articulate them:",type = "input", inputId = 'question_1')
       shinyalert("Question 2 of 3", "Did you feel that the experimental protocol allowed you to express your subjective notion of fairness?", type = "input", inputId = 'question_2')
       shinyalert("Question 3 of 3", "Any other comments on the experimental protocol or app?", type = "input", inputId = 'question_3')
-      shinyalert("Complete!", 'Thank you for your fairness rankings, please exit the app', type = "success")
+      shinyalert("Complete!", 'Thank you for your fairness rankings, please exit the app', type = "success", inputId='finished')
       shinyjs::disable("fair_button")
       shinyjs::disable("unfair_button")
       }else{
@@ -120,7 +120,7 @@ server <- function(input, output, session){
       shinyalert("Question 1 of 3", "To the extent that you ad or developed systematic or informal rules for deciding which pairs should be treated equally, briefly articulate them:",type = "input", inputId = 'question_1')
       shinyalert("Question 2 of 3", "Did you feel that the experimental protocl allowed you to express your subjective notion of fairness?", type = "input", inputId = 'question_2')
       shinyalert("Question 3 of 3", "Any other comments on the experimental protocol or app?", type = "input", inputId = 'question_3')
-      shinyalert("Complete!", 'Thank you for your fairness rankings, please exit the app', type = "success")
+      shinyalert("Complete!", 'Thank you for your fairness rankings, please exit the app', type = "success", inputId = 'finished_2')
       shinyjs::disable("fair_button")
       shinyjs::disable("unfair_button")
       
